@@ -1,4 +1,4 @@
-OpenVirus [![Build Status](https://travis-ci.org/jaredsburrows/OpenVirus.svg?branch=master)](https://travis-ci.org/jaredsburrows/OpenVirus)
+OpenVirus
 =========
 
 **Open Source Virus Development**
@@ -53,7 +53,7 @@ Most viruses are captured in the wild and disassembled or sold from developer to
 License
 =========
 
-    Copyright (C) 2013 OpenVirus by Jared Burrows
+    Copyright (C) 2015 OpenVirus by Jared Burrows
    
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.

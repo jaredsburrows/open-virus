@@ -1,45 +1,76 @@
 language: cpp
 
-# os:
-#  - linux
-#  - osx
-
 compiler:
-  - clang
   - gcc
+  - clang
+
+env:
+  global:
+    - LIBSTDC_VERSION=5
+    - CLANG_VERSION=3.6
 
 before_install:
-  - if [ "$TRAVIS_OS_NAME" = "linux" ]; then sudo add-apt-repository ppa:kubuntu-ppa/backports -y; fi; # cmake >=2.8.10
-  - if [ "$CXX" == "g++" ]; then sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test; fi
-  - if [ "$CXX" == "clang++" ]; then sudo add-apt-repository -y ppa:h-rayflood/llvm; fi
-  - if [ "$TRAVIS_OS_NAME" = "linux" ]; then sudo apt-get -qq update; fi;
+  # Repository for cmake
+  - if [ "$TRAVIS_OS_NAME" = "linux" ]; then sudo add-apt-repository ppa:kubuntu-ppa/backports -y; fi
+
+  # Repository for gcc
+  - if [ "$TRAVIS_OS_NAME" = "linux" ]; then sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test; fi
+
+  # Repository for clang
+  - if [ "$TRAVIS_OS_NAME" = "linux" ]; then sudo add-apt-repository -y ppa:h-rayflood/llvm; fi
+  - if [ "$TRAVIS_OS_NAME" = "linux" ]; then sudo add-apt-repository -y ppa:h-rayflood/llvm-upper; fi
+  - if [ "$TRAVIS_OS_NAME" = "linux" ]; then sudo add-apt-repository -y ppa:h-rayflood/gcc-upper; fi
+
+  # Update packages
+  - if [ "$TRAVIS_OS_NAME" = "linux" ]; then sudo apt-get update -qq; fi
 
 install:
-  # install cmake
-  - if [ "$TRAVIS_OS_NAME" = "linux" ]; then sudo apt-get -qq install cmake gcc-multilib g++-multilib valgrind; fi;
+  # Download cmake and other build packages
+  - if [ "$TRAVIS_OS_NAME" = "linux" ]; then sudo apt-get -qq install cmake build-essential; fi
+  - if [ "$TRAVIS_OS_NAME" = "linux" ]; then sudo apt-get -qq --allow-unauthenticated install libstdc++-${LIBSTDC_VERSION}-dev cpp-${LIBSTDC_VERSION} gcc-${LIBSTDC_VERSION}-multilib g++-${LIBSTDC_VERSION}-multilib; fi
 
-  # install boost
-  - if [ "$TRAVIS_OS_NAME" = "linux" ]; then sudo apt-get install libboost-dev libboost-all-dev; fi;
+  # Install gcc
+  - if [ "$CXX" == "g++" ]; then sudo apt-get -qq --allow-unauthenticated install gcc-${LIBSTDC_VERSION} g++-${LIBSTDC_VERSION}; fi
+  - if [ "$CXX" == "g++" ]; then export CXX="g++-${LIBSTDC_VERSION}"; fi
+  - if [ "$CC" == "gcc" ]; then export CC="gcc-${LIBSTDC_VERSION}"; fi
 
-  # install g++
-  - if [ "$CXX" == "g++" ]; then sudo apt-get install -qq g++-5; fi
-  - if [ "$CXX" == "g++" ]; then sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-5 50; fi
+  # Install clang
+  - if [ "$CXX" == "clang++" ]; then sudo apt-get -qq --allow-unauthenticated install clang-${CLANG_VERSION} clang++-${CLANG_VERSION}; fi
+  - if [ "$CXX" == "clang++" ]; then export CXX="clang++-${CLANG_VERSION}"; fi
+  - if [ "$CC" == "clang" ]; then export CC="clang-${CLANG_VERSION}"; fi
 
-  # install clang
-  - if [ "$CXX" == "clang++" ]; then sudo apt-get install --allow-unauthenticated -qq clang-3.4; fi
-  - if [ "$CXX" == "clang++" ]; then cwd=$(pwd); fi
+  # Install libc++ for clang
+  # - if [ "$CXX" == "clang++" ]; then export CXXFLAGS="-std=c++0x -stdlib=libc++"; fi
+  # # - if [ "$CXX" == "clang++" ]; then svn co --quiet http://llvm.org/svn/llvm-project/libcxx/trunk@201601 libcxx; fi
+  # - if [ "$CXX" == "clang++" ]; then svn co --quiet http://llvm.org/svn/llvm-project/libcxx/trunk libcxx; fi
+  # - if [ "$CXX" == "clang++" ]; then cd libcxx/lib && bash buildit; fi
+  # - if [ "$CXX" == "clang++" ]; then sudo cp ./libc++.so.1.0 /usr/lib/; fi
+  # - if [ "$CXX" == "clang++" ]; then sudo mkdir /usr/include/c++/v1; fi
+  # - if [ "$CXX" == "clang++" ]; then cd .. && sudo cp -r include/* /usr/include/c++/v1/; fi
+  # - if [ "$CXX" == "clang++" ]; then cd /usr/lib && sudo ln -sf libc++.so.1.0 libc++.so; fi
+  # - if [ "$CXX" == "clang++" ]; then sudo ln -sf libc++.so.1.0 libc++.so.1 && cd $cwd; fi
 
 before_script:
+  # Display versions
+  - if [ "$TRAVIS_OS_NAME" = "linux" ]; then lsb_release -a; fi
+  - uname -a
   - cmake --version
-  - clang --version
   - gcc --version
-  - mkdir build
-  - cd build
+  - g++ --version
+  - clang --version
+  - clang++ --version
+  - $CC --version
+  - $CXX --version
+
+  # Build with cmake
+  - mkdir openvbuild
+  - cd openvbuild
   - cmake ..
   - cd ..
 
 script:
-  - cd build
+  # Run make after cmake
+  - cd openvbuild
   - make
   - cd ..
 
@@ -49,4 +80,3 @@ branches:
 
 notifications:
   email: false
-
