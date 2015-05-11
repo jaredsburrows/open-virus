@@ -2,12 +2,14 @@ language: cpp
 
 compiler:
   - gcc
-  #- clang
+  - clang
 
 env:
   global:
     - LIBSTDC_VERSION=5
     - CLANG_VERSION=3.4
+  allow_failures:
+  - compiler: clang
 
 before_install:
   # Repository for cmake
@@ -79,3 +81,6 @@ branches:
 
 notifications:
   email: false
+
+cache:
+ - apt

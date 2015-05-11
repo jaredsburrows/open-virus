@@ -1,4 +1,4 @@
-OpenVirus
+OpenVirus [![Build Status](https://travis-ci.org/jaredsburrows/OpenVirus.svg?branch=master)](https://travis-ci.org/jaredsburrows/OpenVirus)
 =========
 
 **Open Source Virus Development**
@@ -17,7 +17,6 @@ Most viruses are captured in the wild and disassembled or sold from developer to
  - [Client](#client)  
  	- Simple shell to reconnect back to virus on specified IP and port.
  - [Setup](#setup)
- - [FAQ](#faq)
  - [License](#license)
 
 <a name="command"/>
@@ -35,18 +34,6 @@ Most viruses are captured in the wild and disassembled or sold from developer to
 
 <a name="setup"/>
 ### Setup
-
-<a name="faq"/>
-### FAQ
- - Why PHP?
-    - PHP is a nice and widely used language. It made it very easy when sending and recieving HTTP requests from the Command and Control Server to the Server(virus) and vice-versa.
-
- - Why C/C++?
-    - Compatibility with different operatings without many dependencies. Most viruses are written in a low level language close to the operating system. Using C/C++, we do not have to assume the victim has Java or Python installed.
-
-- Why cross-platform?
-    - Creating cross-platform applications is an important practice for developers because it reaches the most people by operating on different devices which usually run different operating systems. In this case: Windows, Linux and Mac OSX.
-
 
 
 <a name="license"/>

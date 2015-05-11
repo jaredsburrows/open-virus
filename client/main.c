@@ -16,6 +16,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+
 #include "network.h" // Windows/Linux/Unix compatible headers
 
 #define MESSAGE_LENGTH 100
