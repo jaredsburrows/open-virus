@@ -24,3 +24,8 @@ void Hello::say() {
     std::cout << "Hello!" << std::endl;
 }
 
+extern "C" Module* load() {
+  Module* module = new Hello;
+  return module;
+}
+
