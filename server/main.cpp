@@ -14,59 +14,71 @@
  */
 
 #include <iostream>
-#include <functional>
-#include <ctime>
-
-// C++11 headers
-#include <atomic>
-#include <chrono>
-#include <unordered_map>
+#include <cstdio>
 #include <thread>
 
-// use using
-using sysclock = std::chrono::system_clock;
+#include "shell.hpp"
 
 
-// C++11 compile-time assertion
-static_assert(sizeof(void*) == sizeof(char*), "compile time assertion failed");
+auto commandListener() -> void {
 
-
-std::string now () {
-  // use clocks
-  auto now = sysclock::now();
-  auto time = sysclock::to_time_t(now);
-  return ::ctime(&time);
+    std::this_thread::sleep_for(std::chrono::milliseconds(5000));
 }
 
-// // use C++11 function syntax
-auto callback () -> void {
-  std::cout << "thread started at " << now() << std::endl;
+auto keepAlive() -> void {
 
-  std::this_thread::sleep_for(std::chrono::milliseconds(5000));
+    std::this_thread::sleep_for(std::chrono::milliseconds(5000));
 
-  std::cout << "thread finished at " << now() << std::endl;
+}
+
+// Load modules
+// Listen for commands
+// Send data to remote server
+// Run commands remotely
+
+
+class Request {
+public:
+    Request& withA();
+    Request& withB();
+    Request& withC();
 };
 
+Request& Request::withA() {
+    return *this;
+}
 
-int main (int, char*[]) {
-  auto&& start = now();
+Request& Request::withB() {
+    return *this;
+}
 
-  std::cout << "program started at " << start << std::endl;
+Request& Request::withC() {
+    return *this;
+}
 
-  // use unordered map and initializer list
-  std::unordered_map<std::string, std::string> values = {
-    { "Hello", "World" }
-  };
+// Actions
+// 1. lauch theread for sending data
+// // send "keep-alive" - to C&C server
+// 2. launch thread of conncetions
 
-  // use auto and range iterator syntax
-  for (auto const& it : values) {
-    std::cout << it.first << " " << it.second << std::endl;
-  }
+static const int NUMBER_ARGS = 2;
 
-  // use std::thread
-  std::thread t(callback);
-  t.join();
+int main(const int argc, const char** argv) {
 
-  std::cout << "program finished at " << now() << std::endl;
+    if (argc != NUMBER_ARGS) {
+        printf("%s [Port]\n", argv[0]);
+        return EXIT_FAILURE;
+    }
+
+
+    Request r;
+    r.withA().withB().withC();
+
+    Shell s;
+    std::cout << s.runCommand("ls") << std::endl;
+    std::cout << s.runCommand("ls", 100) << std::endl;
+
+
   return 0;
 }
+

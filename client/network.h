@@ -1,3 +1,6 @@
+#ifndef NETWORK_H
+#define NETWORK_H
+
 // OS Dependent
 #ifdef _WIN32
     // Windows
@@ -11,4 +14,6 @@
 #endif
 
 void closeSockets(const int);
+
+#endif // NETWORK_H
 

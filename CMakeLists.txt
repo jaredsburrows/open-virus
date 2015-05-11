@@ -12,15 +12,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-message("== ====================================================")
-message("== [OpenVirus - checking dependencies]")
-message("== ====================================================")
-message("")
+#message("== ====================================================")
+#message("== [OpenVirus - checking dependencies]")
+#message("== ====================================================")
+#message("")
 
 cmake_minimum_required (VERSION 2.8.7 FATAL_ERROR)
 project(OpenVirus C CXX)
 
 # Set compiled binary path
+set(CMAKE_MACOSX_RPATH 1)
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
@@ -62,9 +63,6 @@ set(WARNING_FLAGS "-Wall -Wextra ")
 # All Security flags
 #set(SECURITY_FLAGS "${SIGNED_FLAGS} ${FORMAT_FLAGS} ${STACK_FLAGS} ${OVERFLOW_FLAGS} ${ASLR_FLAGS} ${DEP_FLAGS} ")
 
-# Debugging
-# set(SHARED_FLAGS "${WARNING_FLAGS}")
-
 set(SHARED_FLAGS "${WARNING_FLAGS} ${SECURITY_FLAGS}")
 
 # MSVC
@@ -84,7 +82,7 @@ if("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU"
     OR "${CMAKE_C_COMPILER_ID}" STREQUAL "GNU")
     message("-- Using GCC")
     set(CMAKE_C_FLAGS "${SHARED_FLAGS}")
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pthread -std=c++11")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pthread -std=c++14")
     # set(CMAKE_EXE_LINKER_FLAGS, "-pthread")
 endif()
 
@@ -92,13 +90,13 @@ endif()
 if("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang"
     OR "${CMAKE_C_COMPILER_ID}" STREQUAL "Clang")
     set(CMAKE_C_FLAGS "${SHARED_FLAGS}")
-    set(CMAKE_CXX_FLAGS "${SHARED_FLAGS} -std=gnu++11 -stdlib=libc++")
+    set(CMAKE_CXX_FLAGS "${SHARED_FLAGS} -std=c++14 -stdlib=libc++")
     # set(CMAKE_EXE_LINKER_FLAGS, "-pthread")
 
     # Clang / Mac OS only
     if(APPLE)
         message("-- Using Clang on OSX")
-        # Required on OSX to compile c++11
+        # Required on OSX to compile c++14
         set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -mmacosx-version-min=10.7")
     else()
         message("-- Using Clang")
@@ -118,8 +116,14 @@ message("== [OpenVirus - building]")
 message("== ====================================================")
 message("")
 
+# Connect back for individual virus nodes
 add_subdirectory(client)
 include_directories(client)
 
+# Virus node to be used on each individual computer
 add_subdirectory(server)
 include_directories(server)
+
+# Individual modules to be loaded
+add_subdirectory(modules)
+include_directories(modules)
