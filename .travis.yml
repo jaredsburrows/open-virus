@@ -16,12 +16,19 @@ matrix:
     - compiler: clang
 
 before_install:
+  # Cmake
+  - wget http://www.cmake.org/files/v3.2/cmake-3.2.3-Linux-i386.tar.gz
+  - tar -xzf cmake-3.2.3-Linux-i386.tar.gz
+  - sudo cp -fR cmake-3.2.3-Linux-i386/* /usr
+  
+  # Prepare compiler
   - if [[ "$CXX" == "g++" || "$CC" == "gcc" ]]; then ./scripts/gcc.sh; fi
   - if [[ "$CXX" == "clang++" || "$CC" == "clang" ]]; then ./scripts/clang.sh; fi
 
   # Debug information
   - lsb_release -a
   - uname -a
+  - cmake -version
   - $CC --version
   - $CXX --version
 
