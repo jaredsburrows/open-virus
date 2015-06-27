@@ -82,7 +82,8 @@ if("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU"
     OR "${CMAKE_C_COMPILER_ID}" STREQUAL "GNU")
     message("-- Using GCC")
     set(CMAKE_C_FLAGS "${SHARED_FLAGS}")
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pthread -std=c++14")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pthread -std=c++11")
+    # set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pthread -std=c++14")
     # set(CMAKE_EXE_LINKER_FLAGS, "-pthread")
 endif()
 
@@ -90,7 +91,8 @@ endif()
 if("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang"
     OR "${CMAKE_C_COMPILER_ID}" STREQUAL "Clang")
     set(CMAKE_C_FLAGS "${SHARED_FLAGS}")
-    set(CMAKE_CXX_FLAGS "${SHARED_FLAGS} -std=c++14 -stdlib=libc++")
+    set(CMAKE_CXX_FLAGS "${SHARED_FLAGS} -std=c++11 -stdlib=libc++")
+    # set(CMAKE_CXX_FLAGS "${SHARED_FLAGS} -std=c++14 -stdlib=libc++")
     # set(CMAKE_EXE_LINKER_FLAGS, "-pthread")
 
     # Clang / Mac OS only
