@@ -1,9 +1,8 @@
 cmake_minimum_required(VERSION 3.2 FATAL_ERROR)
 
-file(GLOB client_SRC
-    "*.h"
-    "*.c"
-)
+set(CLIENT_SRC
+    main.c
+    network.c)
 
-add_executable(client ${client_SRC})
+add_executable(client ${CLIENT_SRC})
 

@@ -1,9 +1,9 @@
 cmake_minimum_required(VERSION 3.2 FATAL_ERROR)
 
-file(GLOB server_SRC
-    "*.hpp"
-    "*.cpp"
+set(SERVER_SRC
+    "main.cpp"
+    "shell.cpp"
 )
 
-add_executable(server ${server_SRC})
+add_executable(server ${SERVER_SRC})
 
