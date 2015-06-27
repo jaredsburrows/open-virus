@@ -25,8 +25,8 @@ void Hello::say() {
 }
 
 extern "C" Module* load() {
-  Module* module = new Hello;
-  return module;
+    Module* module = new Hello;
+    return module;
 }
 
 Module* load2() {

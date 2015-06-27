@@ -2,11 +2,11 @@
 
 void closeSockets(const int socketDescriptor) {
     // Cleanup
-    #ifdef _WIN32
+#ifdef _WIN32
     closesocket(socketDescriptor);
     WSACleanup();
-    #else
+#else
     close(socketDescriptor);
-    #endif
+#endif
 }
 

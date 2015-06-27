@@ -116,6 +116,6 @@ add_subdirectory(server)
 include_directories(server)
 
 # Individual modules to be loaded
-add_subdirectory(modules)
-include_directories(modules)
+add_subdirectory(modules/hello)
+include_directories(modules/hello)
 

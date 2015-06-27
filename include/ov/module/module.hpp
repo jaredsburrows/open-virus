@@ -2,7 +2,7 @@
 #define MODULE_HPP
 
 #include <iostream>
- 
+
 class Module {
 public:
     virtual std::string name() = 0;
@@ -10,6 +10,6 @@ public:
     virtual bool unload() = 0;
     virtual void run() = 0;
 };
- 
+
 #endif // Module
 

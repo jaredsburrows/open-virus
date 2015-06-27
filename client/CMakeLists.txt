@@ -1,8 +1,8 @@
 cmake_minimum_required(VERSION 3.2 FATAL_ERROR)
 
-set(CLIENT_SRC
+set(SOURCE
     main.c
     network.c)
 
-add_executable(client ${CLIENT_SRC})
+add_executable(client ${SOURCE})
 

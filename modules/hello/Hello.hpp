@@ -11,7 +11,7 @@ public:
     virtual bool load();
     virtual bool unload();
     virtual void run();
-    void say();    
+    void say();
 };
 
 #endif // HELLO_HPP
