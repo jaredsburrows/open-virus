@@ -16,75 +16,31 @@ matrix:
     - compiler: clang
 
 before_install:
-  # Repository for cmake
-  - if [ "$TRAVIS_OS_NAME" = "linux" ]; then sudo add-apt-repository ppa:kubuntu-ppa/backports -y; fi
+  - if [[ "$CXX" == "g++" || "$CC" == "gcc" ]]; then ./scripts/gcc.sh; fi
+  - if [[ "$CXX" == "clang++" || "$CC" == "clang" ]]; then ./scripts/clang.sh; fi
 
-  # Repository for gcc
-  - if [ "$TRAVIS_OS_NAME" = "linux" ]; then sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test; fi
-
-  # Repository for clang
-  - if [ "$TRAVIS_OS_NAME" = "linux" ]; then sudo add-apt-repository -y ppa:h-rayflood/llvm; fi
-  - if [ "$TRAVIS_OS_NAME" = "linux" ]; then sudo add-apt-repository -y ppa:h-rayflood/llvm-upper; fi
-  - if [ "$TRAVIS_OS_NAME" = "linux" ]; then sudo add-apt-repository -y ppa:h-rayflood/gcc-upper; fi
-
-  # Update packages
-  - if [ "$TRAVIS_OS_NAME" = "linux" ]; then sudo apt-get update -qq; fi
-
-install:
-  # Download cmake and other build packages
-  - if [ "$TRAVIS_OS_NAME" = "linux" ]; then sudo apt-get -qq install cmake build-essential; fi
-  - if [ "$TRAVIS_OS_NAME" = "linux" ]; then sudo apt-get -qq --allow-unauthenticated install libstdc++-${LIBSTDC_VERSION}-dev cpp-${LIBSTDC_VERSION} gcc-${LIBSTDC_VERSION}-multilib g++-${LIBSTDC_VERSION}-multilib; fi
-
-  # Install gcc
-  - if [ "$CXX" == "g++" ]; then sudo apt-get -qq --allow-unauthenticated install gcc-${LIBSTDC_VERSION} g++-${LIBSTDC_VERSION}; fi
-  - if [ "$CXX" == "g++" ]; then export CXX="g++-${LIBSTDC_VERSION}"; fi
-  - if [ "$CC" == "gcc" ]; then export CC="gcc-${LIBSTDC_VERSION}"; fi
-
-  # Install clang
-  - if [ "$CXX" == "clang++" ]; then sudo apt-get -qq --allow-unauthenticated install clang-${CLANG_VERSION} clang++-${CLANG_VERSION}; fi
-  - if [ "$CXX" == "clang++" ]; then export CXX="clang++-${CLANG_VERSION}"; fi
-  - if [ "$CC" == "clang" ]; then export CC="clang-${CLANG_VERSION}"; fi
-
-  # Install libc++ for clang
-  - if [ "$CXX" == "clang++" ]; then export CXXFLAGS="-std=c++0x -stdlib=libc++"; fi
-  - if [ "$CXX" == "clang++" ]; then svn co --quiet http://llvm.org/svn/llvm-project/libcxx/trunk libcxx; fi
-  - if [ "$CXX" == "clang++" ]; then cd libcxx/lib && bash buildit; fi
-  - if [ "$CXX" == "clang++" ]; then sudo cp ./libc++.so.1.0 /usr/lib/; fi
-  - if [ "$CXX" == "clang++" ]; then sudo mkdir /usr/include/c++/v1; fi
-  - if [ "$CXX" == "clang++" ]; then cd .. && sudo cp -r include/* /usr/include/c++/v1/; fi
-  - if [ "$CXX" == "clang++" ]; then cd /usr/lib && sudo ln -sf libc++.so.1.0 libc++.so; fi
-  - if [ "$CXX" == "clang++" ]; then sudo ln -sf libc++.so.1.0 libc++.so.1 && cd $cwd; fi
-
-before_script:
-  # Display versions
-  - if [ "$TRAVIS_OS_NAME" = "linux" ]; then lsb_release -a; fi
+  # Debug information
+  - lsb_release -a
   - uname -a
-  - cmake --version
-  - gcc --version
-  - g++ --version
-  - clang --version
-  - clang++ --version
   - $CC --version
   - $CXX --version
 
-  # Build with cmake
-  - if [ ! -d "build" ]; then mkdir build; fi
-  - cd build
-  - cmake ..
-  - cd ..
-
 script:
+  # Build with cmake
+  - rm -rf build/
+  - mkdir build
+  - cd build
+  - cmake -DCMAKE_CXX_COMPILER=$CXX ..
+  - cd ..
   # Run make after cmake
   - cd build
   - make
   - cd ..
 
-branches:
-  except:
-    - gh-pages
-
 notifications:
   email: false
 
+sudo: required
+
 cache:
- - apt
+  - apt

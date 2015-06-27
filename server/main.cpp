@@ -14,10 +14,14 @@
  */
 
 #include <iostream>
-#include <cstdio>
 #include <thread>
 
+#include <cstdio>
+
+#include <dlfcn.h>
+
 #include "shell.hpp"
+#include "../modules/Module.hpp"
 
 
 auto commandListener() -> void {
@@ -36,26 +40,6 @@ auto keepAlive() -> void {
 // Send data to remote server
 // Run commands remotely
 
-
-class Request {
-public:
-    Request& withA();
-    Request& withB();
-    Request& withC();
-};
-
-Request& Request::withA() {
-    return *this;
-}
-
-Request& Request::withB() {
-    return *this;
-}
-
-Request& Request::withC() {
-    return *this;
-}
-
 // Actions
 // 1. lauch theread for sending data
 // // send "keep-alive" - to C&C server
@@ -65,18 +49,26 @@ static const int NUMBER_ARGS = 2;
 
 int main(const int argc, const char** argv) {
 
-    if (argc != NUMBER_ARGS) {
-        printf("%s [Port]\n", argv[0]);
-        return EXIT_FAILURE;
+    // if (argc != NUMBER_ARGS) {
+    //     printf("%s [Port]\n", argv[0]);
+    //     return EXIT_FAILURE;
+    // }
+
+
+    for (int i = 1; i < argc; ++i) {
+        void* shared_library = dlopen(argv[i], RTLD_LAZY);
+        Module* (*load)() = reinterpret_cast<Module* (*)()>(dlsym(shared_library, "load"));
+        Module* module;
+        if (load) {
+            module = load();
+            module->run();
+            // module->say();
+            std::cout << module->moduleName() << "\n";
+        } else {
+            std::cerr << "Error while loading: " << argv[i] << "\n";
+        }
     }
 
-
-    Request r;
-    r.withA().withB().withC();
-
-    Shell s;
-    std::cout << s.runCommand("ls") << std::endl;
-    std::cout << s.runCommand("ls", 100) << std::endl;
 
 
   return 0;

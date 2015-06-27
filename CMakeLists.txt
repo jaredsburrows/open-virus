@@ -69,7 +69,7 @@ set(SHARED_FLAGS "${WARNING_FLAGS} ${SECURITY_FLAGS}")
 if(MSVC OR "${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC"
     OR "${CMAKE_C_COMPILER_ID}" STREQUAL "MSVC")
     message("-- Using MSVC")
-    set(CMAKE_CXX_FLAGS "/W3")
+    set(CMAKE_CXX_FLAGS "/W4")
 
     # Enable multi-process compilation.
     if(NOT MSVC60 AND NOT MSVC70 AND NOT MSVC71)

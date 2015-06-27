@@ -29,3 +29,8 @@ extern "C" Module* load() {
   return module;
 }
 
+Module* load2() {
+    Module* module = new Hello;
+    return module;
+}
+

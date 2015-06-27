@@ -1,5 +1,6 @@
 #include <iostream>
-#include "shell.hpp"
+
+#include "Shell.hpp"
 
 const std::string Shell::runCommand(const char* command, const int size) {
     char* buffer = new char[size];
