@@ -1,17 +1,17 @@
 #include <iostream>
 
-#include "Hello.hpp"
+#include "hello.hpp"
 
-std::string Hello::moduleName() {
+std::string Hello::name() {
     return "Hello";
 }
 
-int Hello::loadModule() {
+bool Hello::load() {
 
     return EXIT_SUCCESS;
 }
 
-int Hello::unloadModule() {
+bool Hello::unload() {
 
     return EXIT_SUCCESS;
 }

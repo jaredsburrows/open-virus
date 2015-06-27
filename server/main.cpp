@@ -21,7 +21,7 @@
 #include <dlfcn.h>
 
 #include "shell.hpp"
-#include "../modules/Module.hpp"
+#include "../modules/module.hpp"
 
 
 auto commandListener() -> void {
@@ -63,7 +63,7 @@ int main(const int argc, const char** argv) {
             module = load();
             module->run();
             // module->say();
-            std::cout << module->moduleName() << "\n";
+            std::cout << module->name() << "\n";
         } else {
             std::cerr << "Error while loading: " << argv[i] << "\n";
         }

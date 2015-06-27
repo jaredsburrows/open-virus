@@ -5,9 +5,9 @@
  
 class Module {
 public:
-    virtual std::string moduleName() = 0;
-    virtual int loadModule() = 0;
-    virtual int unloadModule() = 0;
+    virtual std::string name() = 0;
+    virtual bool load() = 0;
+    virtual bool unload() = 0;
     virtual void run() = 0;
 };
  

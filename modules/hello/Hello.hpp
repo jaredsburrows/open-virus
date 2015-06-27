@@ -3,13 +3,13 @@
 
 #include <iostream>
 
-#include "../Module.hpp"
+#include "../module.hpp"
 
 class Hello : public Module {
 public:
-    virtual std::string moduleName();
-    virtual int loadModule();
-    virtual int unloadModule();
+    virtual std::string name();
+    virtual bool load();
+    virtual bool unload();
     virtual void run();
     void say();    
 };
