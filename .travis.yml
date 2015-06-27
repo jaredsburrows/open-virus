@@ -31,12 +31,15 @@ before_install:
   - $CC --version
   - $CXX --version
 
+install:
+ # Before cmake
+ - rm -rf build/
+ - mkdir build
+ - cd build
+ - cmake ..
+
 script:
   # Build with cmake
-  - rm -rf build/
-  - mkdir build
-  - cd build
-  - cmake ..
   - make
 
 notifications:

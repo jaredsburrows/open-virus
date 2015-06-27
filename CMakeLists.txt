@@ -12,13 +12,21 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-#message("== ====================================================")
-#message("== [OpenVirus - checking dependencies]")
-#message("== ====================================================")
-#message("")
+message("== ====================================================")
+message("== [OpenVirus - checking dependencies]")
+message("== ====================================================")
+message("")
 
 cmake_minimum_required(VERSION 3.2 FATAL_ERROR)
 project(OpenVirus C CXX)
+
+# Debug
+# -DCMAKE_CXX_COMPILER=
+# set(CMAKE_VERBOSE_MAKEFILE ON)
+
+# Turn on C++ 11 support
+set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 # Set paths
 set(CMAKE_MACOSX_RPATH 1)
@@ -65,48 +73,27 @@ set(WARNING_FLAGS "-Wall -Wextra ")
 
 set(SHARED_FLAGS "${WARNING_FLAGS} ${SECURITY_FLAGS}")
 
-# MSVC
-if(MSVC OR "${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC"
-    OR "${CMAKE_C_COMPILER_ID}" STREQUAL "MSVC")
-    message("-- Using MSVC")
-    set(CMAKE_CXX_FLAGS "/W4")
-
+if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang" OR
+    "${CMAKE_CXX_COMPILER_ID}" STREQUAL "AppleClang")
+    message(STATUS "Using Clang")
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${SHARED_FLAGS}")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${SHARED_FLAGS} -std=c++11 -stdlib=libc++ -ldl")
+    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -pthread -stdlib=libc++ -ldl")
+elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
+    message(STATUS "Using GCC")
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${SHARED_FLAGS}")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${SHARED_FLAGS} -std=c++11 -pthread -ldl")
+    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -pthread -ldl")
+elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC")
+    message(STATUS "Using MSVC")
+    add_definitions(
+        /Wall
+        /D "_CRT_SECURE_NO_WARNINGS"
+    )
     # Enable multi-process compilation.
-    if(NOT MSVC60 AND NOT MSVC70 AND NOT MSVC71)
+    if (NOT MSVC60 AND NOT MSVC70 AND NOT MSVC71)
         List(APPEND CFLAGS /MP)
     endif()
-endif()
-
-# GCC
-if("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU"
-    OR "${CMAKE_C_COMPILER_ID}" STREQUAL "GNU")
-    message("-- Using GCC")
-    set(CMAKE_C_FLAGS "${SHARED_FLAGS}")
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pthread -std=c++14 -ldl")
-    # set(CMAKE_EXE_LINKER_FLAGS, "-pthread")
-endif()
-
-# Clang
-if("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang"
-    OR "${CMAKE_C_COMPILER_ID}" STREQUAL "Clang")
-    set(CMAKE_C_FLAGS "${SHARED_FLAGS}")
-    set(CMAKE_CXX_FLAGS "${SHARED_FLAGS} -std=c++11 -stdlib=libc++ -ldl")
-    # set(CMAKE_CXX_FLAGS "${SHARED_FLAGS} -std=c++14 -stdlib=libc++ -ldl")
-    # set(CMAKE_EXE_LINKER_FLAGS, "-pthread")
-
-    # Clang / Mac OS only
-    if(APPLE)
-        message("-- Using Clang on OSX")
-        # Required on OSX to compile c++14
-        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -mmacosx-version-min=10.7")
-    else()
-        message("-- Using Clang")
-    endif()
-endif()
-
-# Use Unicode by default on Windows target
-if(WIN32)
-    List(APPEND CFLAGS "${DEFINE}_UNICODE")
 endif()
 
 
