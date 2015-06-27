@@ -17,7 +17,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "network.h" // Windows/Linux/Unix compatible headers
+#include <ov/client/network.h> // Windows/Linux/Unix compatible headers
 
 #define MESSAGE_LENGTH 100
 

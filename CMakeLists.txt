@@ -20,7 +20,7 @@
 cmake_minimum_required (VERSION 2.8.7 FATAL_ERROR)
 project(OpenVirus C CXX)
 
-# Set compiled binary path
+# Set paths
 set(CMAKE_MACOSX_RPATH 1)
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
@@ -115,6 +115,9 @@ message("== ====================================================")
 message("== [OpenVirus - building]")
 message("== ====================================================")
 message("")
+
+# Common include directory
+include_directories(include)
 
 # Connect back for individual virus nodes
 add_subdirectory(client)

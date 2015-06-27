@@ -32,7 +32,7 @@ script:
   - cd build
   - cmake ..
   - make
-# -DCMAKE_CXX_COMPILER=$CXX
+
 notifications:
   email: false
 

@@ -3,7 +3,7 @@
 
 #include <iostream>
 
-#include "../module.hpp"
+#include <ov/module/module.hpp>
 
 class Hello : public Module {
 public:

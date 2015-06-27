@@ -15,13 +15,12 @@
 
 #include <iostream>
 #include <thread>
-
 #include <cstdio>
 
 #include <dlfcn.h>
 
-#include "shell.hpp"
-#include "../modules/module.hpp"
+#include <ov/server/shell.hpp>
+#include <ov/module/module.hpp>
 
 
 auto commandListener() -> void {
