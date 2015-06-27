@@ -3,7 +3,7 @@
 # Exit if fail
 set -e
 
-if [[ "$TRAVIS_OS_NAME" = "linux" -o -z "$TRAVIS_OS_NAME" ]]; then
+if [ "$TRAVIS_OS_NAME" = linux -o -z "$TRAVIS_OS_NAME" ]; then
 
     # Repository for gcc
     sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
@@ -18,7 +18,7 @@ if [[ "$TRAVIS_OS_NAME" = "linux" -o -z "$TRAVIS_OS_NAME" ]]; then
     sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-${LIBSTDC_VERSION} 50
     sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-${LIBSTDC_VERSION} 50
 
-elif [[ "$TRAVIS_OS_NAME" = "osx" ]]; then
+elif [ "$TRAVIS_OS_NAME" = osx ]; then
 
     # Make sure xcode is setup
     xcode-select --install

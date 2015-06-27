@@ -3,7 +3,7 @@
 # Exit if fail
 set -e
 
-if [[ "$TRAVIS_OS_NAME" = "linux" -o -z "$TRAVIS_OS_NAME" ]]; then
+if [ "$TRAVIS_OS_NAME" = linux -o -z "$TRAVIS_OS_NAME" ]; then
 
     # Repository for clang
     sudo add-apt-repository -y ppa:h-rayflood/llvm
@@ -31,7 +31,7 @@ if [[ "$TRAVIS_OS_NAME" = "linux" -o -z "$TRAVIS_OS_NAME" ]]; then
     sudo update-alternatives --install /usr/bin/clang++ clang++ /usr/bin/clang++-${CLANG_VERSION} 50
     sudo update-alternatives --install /usr/bin/clang clang /usr/bin/clang-${CLANG_VERSION} 50
 
-elif [[ "$TRAVIS_OS_NAME" = "osx" ]]; then
+elif [ "$TRAVIS_OS_NAME" = osx ]; then
 
     # Make sure xcode is setup
     xcode-select --install
