@@ -8,22 +8,21 @@ env:
   global:
     - LIBSTDC_VERSION=5
     - CLANG_VERSION=3.6
-  allow_failures:
-  - compiler: clang
 
 matrix:
+  include:
+    os: linux
   allow_failures:
     - compiler: clang
+    # - os: osx
 
 before_install:
-  # Cmake
-  - wget http://www.cmake.org/files/v3.2/cmake-3.2.3-Linux-i386.tar.gz
-  - tar -xzf cmake-3.2.3-Linux-i386.tar.gz
-  - sudo cp -fR cmake-3.2.3-Linux-i386/* /usr
-  
+  # Setup cmake
+  - sh scripts/install-cmake.sh
+
   # Prepare compiler
-  - if [[ "$CXX" == "g++" || "$CC" == "gcc" ]]; then ./scripts/gcc.sh; fi
-  - if [[ "$CXX" == "clang++" || "$CC" == "clang" ]]; then ./scripts/clang.sh; fi
+  - if [[ "$CXX" == "g++" || "$CC" == "gcc" ]]; then sh scripts/install-gcc.sh; fi
+  - if [[ "$CXX" == "clang++" || "$CC" == "clang" ]]; then sh scripts/install-clang.sh; fi
 
   # Debug information
   - lsb_release -a

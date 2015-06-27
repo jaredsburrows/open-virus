@@ -36,3 +36,4 @@ export CC="clang-${CLANG_VERSION}"
 # Debug information
 clang --version
 clang++ --version
+
