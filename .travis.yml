@@ -30,13 +30,9 @@ script:
   - rm -rf build/
   - mkdir build
   - cd build
-  - cmake -DCMAKE_CXX_COMPILER=$CXX ..
-  - cd ..
-  # Run make after cmake
-  - cd build
+  - cmake ..
   - make
-  - cd ..
-
+# -DCMAKE_CXX_COMPILER=$CXX
 notifications:
   email: false
 
