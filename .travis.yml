@@ -8,6 +8,15 @@ compiler:
   - gcc
   - clang
 
+addons:
+  apt:
+    sources:
+    - ubuntu-toolchain-r-test
+    packages:
+    - gcc-5
+    - g++-5
+    - clang
+
 env:
   global:
     - LIBSTDC_VERSION=5
@@ -21,10 +30,6 @@ matrix:
 before_install:
   # Setup cmake
   - sh scripts/install-cmake.sh
-
-  # Prepare compilers
-  - if [[ "$CXX" == "g++" || "$CC" == "gcc" ]]; then sh scripts/install-gcc.sh; fi
-  - if [[ "$CXX" == "clang++" || "$CC" == "clang" ]]; then sh scripts/install-clang.sh; fi
 
   # Debug information
   - if [[ "$TRAVIS_OS_NAME" = "linux" ]]; then lsb_release -a; fi
