@@ -31,6 +31,8 @@ before_install:
   # Setup cmake
   - sh scripts/install-cmake.sh
 
+  - if [ "$CXX" = "g++" ]; then export CXX="g++-5" CC="gcc-5"; fi
+
   # Debug information
   - if [[ "$TRAVIS_OS_NAME" = "linux" ]]; then lsb_release -a; fi
   - uname -a
