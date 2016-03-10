@@ -1,4 +1,4 @@
-OpenVirus [![Build Status](https://travis-ci.org/jaredsburrows/OpenVirus.svg?branch=master)](https://travis-ci.org/jaredsburrows/OpenVirus)
+OpenVirus [![Build Status](https://travis-ci.org/jaredsburrows/open-virus.svg?branch=master)](https://travis-ci.org/jaredsburrows/open-virus)
 =========
 
 **Open Source Virus Development**
