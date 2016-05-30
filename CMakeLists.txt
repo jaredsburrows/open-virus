@@ -1,31 +1,12 @@
-# Copyright (C) 2015 OpenVirus by Jared Burrows <jaredsburrows@gmail.com>
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-# http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-
-message("== ====================================================")
-message("== [OpenVirus - checking dependencies]")
-message("== ====================================================")
-message("")
-
 cmake_minimum_required(VERSION 3.2 FATAL_ERROR)
 project(OpenVirus C CXX)
 
 # Debug
 # -DCMAKE_CXX_COMPILER=
-# set(CMAKE_VERBOSE_MAKEFILE ON)
+set(CMAKE_VERBOSE_MAKEFILE ON)
 
-# Turn on C++ 11 support
-set(CMAKE_CXX_STANDARD 11)
+# Turn on C++ 14 support
+set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 # Set paths
@@ -40,14 +21,6 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 #    include_directories(${Boost_INCLUDE_DIR})
 #    add_definitions("-DHAS_BOOST")
 #endif()
-
-
-
-message("")
-message("== ====================================================")
-message("== [OpenVirus - setting flags]")
-message("== ====================================================")
-message("")
 
 # All Warnings # -Werror -pedantic
 set(WARNING_FLAGS "-Wall -Wextra ")
@@ -76,12 +49,14 @@ set(SHARED_FLAGS "${WARNING_FLAGS} ${SECURITY_FLAGS}")
 if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang" OR
     "${CMAKE_CXX_COMPILER_ID}" STREQUAL "AppleClang")
     message(STATUS "Using Clang")
-    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${SHARED_FLAGS}")
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${SHARED_FLAGS} -std=c++11 -pthread -ldl")
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${SHARED_FLAGS} -ldl")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${SHARED_FLAGS} -std=c++14 -pthread -ldl")
+    set(CMAKE_EXE_LINKER_FLAGS "-ldl")
 elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
     message(STATUS "Using GCC")
-    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${SHARED_FLAGS}")
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${SHARED_FLAGS} -std=c++11 -pthread -ldl")
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${SHARED_FLAGS} -ldl")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${SHARED_FLAGS} -std=c++14 -pthread -ldl")
+    set(CMAKE_EXE_LINKER_FLAGS "-ldl")
 elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC")
     message(STATUS "Using MSVC")
     add_definitions(
@@ -93,14 +68,6 @@ elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC")
         List(APPEND CFLAGS /MP)
     endif()
 endif()
-
-
-
-message("")
-message("== ====================================================")
-message("== [OpenVirus - building]")
-message("== ====================================================")
-message("")
 
 # Common include directory
 include_directories(include)

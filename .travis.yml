@@ -8,43 +8,33 @@ compiler:
   - gcc
   - clang
 
-addons:
-  apt:
-    sources:
-    - ubuntu-toolchain-r-test
-    packages:
-    - gcc-5
-    - g++-5
-    - clang
-
 env:
   global:
-    - LIBSTDC_VERSION=5
-    - CLANG_VERSION=3.6
+    - LIBSTDC_VERSION=6
+    - CLANG_VERSION=3.7
 
 matrix:
   allow_failures:
-    - compiler: clang
-    - os: osx
+    - os: linux
+    - compiler: gcc
 
 before_install:
   # Setup cmake
   - sh scripts/install-cmake.sh
 
-  - if [ "$CXX" = "g++" ]; then export CXX="g++-5" CC="gcc-5"; fi
+  # Prepare compilers
+  - if [[ "$CXX" == "g++" || "$CC" == "gcc" ]]; then sh scripts/install-gcc.sh; fi
+  - if [[ "$CXX" == "clang++" || "$CC" == "clang" ]]; then sh scripts/install-clang.sh; fi
 
-  # Debug information
-  - if [[ "$TRAVIS_OS_NAME" = "linux" ]]; then lsb_release -a; fi
-  - uname -a
-  - $CC --version
-  - $CXX --version
+  #- if [ "$CXX" = "g++" ]; then export CXX="g++-5" CC="gcc-5"; fi
+  #- if [ "$CXX" = "clang++" ]; then export CXX="clang++-3.6" CC="clang-3.6"; fi
 
 install:
- # Before cmake
- - rm -rf build/
- - mkdir build
- - cd build
- - cmake ..
+  # Before cmake
+  - rm -rf build/
+  - mkdir build
+  - cd build
+  - cmake ..
 
 script:
   # Build with cmake
